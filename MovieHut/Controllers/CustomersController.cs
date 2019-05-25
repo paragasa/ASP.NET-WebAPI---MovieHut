@@ -10,7 +10,7 @@ namespace MovieHut.Controllers
 {
     public class CustomersController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
         // GET: Customers
         public CustomersController()
         {

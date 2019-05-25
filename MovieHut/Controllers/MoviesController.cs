@@ -11,7 +11,7 @@ namespace MovieHut.Controllers
 {
     public class MoviesController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
         public ActionResult Random()
         {
             var movie = new Movie() {Name = "Lord of the Rings"};
@@ -43,7 +43,7 @@ namespace MovieHut.Controllers
         }
         public ActionResult Index()
         {
-            var movies = _context.Movies.ToList();
+            var movies = _context.Movies.Include(m=>m.Genre).ToList();
             return View(movies);
         }
 
