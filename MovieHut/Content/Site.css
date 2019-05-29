@@ -23,6 +23,7 @@ textarea {
     max-width: 280px;
 }
 
+/*CSS FOR VALIDATION of ENtry Fields*/
 .field-validation-error {
     color: red;
 }
