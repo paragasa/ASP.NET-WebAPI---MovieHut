@@ -15,7 +15,8 @@ namespace MovieHut.App_Start
             CreateMap<Customer, CustomerDto>();
             CreateMap<CustomerDto, Customer>();
 
-            //TODO create mapping for Movies
+            CreateMap<Movie, MovieDto>();
+            CreateMap<MovieDto, Movie>();
         }
     }
 }
