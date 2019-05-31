@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -20,15 +21,23 @@ namespace MovieHut.Controllers.Api
             _context= new ApplicationDbContext();
         }
         //api/customers    return customerDto list
-        public IEnumerable<CustomerDto> GetCustomers()
+
+        public IHttpActionResult GetCustomers()
         {
-            return _context.Customers.ToList().Select(Mapper.Map<Customer, CustomerDto>);
+
+            var customersDto = _context.Customers
+                .Include(c => c.MembershipType)
+                .ToList()
+                .Select(Mapper.Map<Customer, CustomerDto>);
+            return Ok(customersDto);
         }
 
         // /api/customers/1(id) returns single customerDto
         public IHttpActionResult GetCustomer(int id)
         {
-            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+            var customer = _context.Customers
+                .SingleOrDefault(c => c.Id == id);
+
             if (customer == null)
                 return NotFound();
             return Ok(Mapper.Map<Customer,CustomerDto>(customer));
