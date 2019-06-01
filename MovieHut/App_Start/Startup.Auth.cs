@@ -57,8 +57,8 @@ namespace MovieHut
 
             //remove secret
             app.UseFacebookAuthentication(
-               appId: "2518387618172709",
-               appSecret: "8e2c30c98573c30fec17470b52866f6d");
+               appId: "",
+               appSecret: "");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
