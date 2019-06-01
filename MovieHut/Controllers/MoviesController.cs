@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
+using System.Web.Security;
 using MovieHut.Models;
 using MovieHut.ViewModels;
 
@@ -25,10 +26,24 @@ namespace MovieHut.Controllers
         {
             _context.Dispose();
         }
-        public ActionResult Index()
+        public ViewResult Index()
         {
-            var movies = _context.Movies.Include(m=>m.Genre).ToList();
-            return View(movies);
+            if (User.IsInRole("CanManageMovies"))
+            {
+                return View("List");
+            }
+            
+            return View("ReadOnlyList");
+        }
+        [Authorize(Roles=RoleName.CanManageMovies)]
+        public ViewResult New()
+        {
+            var genres = _context.Genres.ToList();
+            var viewModel = new MovieFormViewModel()
+            {
+                Genres = genres
+            };
+            return View("MovieForm", viewModel);
         }
 
         public ActionResult Details(int id)
@@ -43,18 +58,9 @@ namespace MovieHut.Controllers
         }
 
 
-        public ActionResult New()
-        {
-            var genres = _context.Genres.ToList();
-            var viewModel = new MovieFormViewModel()
-            {
-                Genres = genres
-            };
-            return View("MovieForm", viewModel);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ActionResult Save(Movie movie)
         {
             if (!ModelState.IsValid)
@@ -84,6 +90,7 @@ namespace MovieHut.Controllers
             return RedirectToAction("Index", "Movies");
         }
 
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ActionResult Edit(int id)
         {
             var movie = _context.Movies.SingleOrDefault(m => m.Id == id);

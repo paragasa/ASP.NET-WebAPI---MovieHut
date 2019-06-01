@@ -9,6 +9,7 @@ using MovieHut.ViewModels;
 
 namespace MovieHut.Controllers
 {
+    //[Authorize] //filter user
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
