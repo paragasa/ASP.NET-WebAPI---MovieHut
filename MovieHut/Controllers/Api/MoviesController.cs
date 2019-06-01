@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -19,9 +20,13 @@ namespace MovieHut.Controllers.Api
             _context = new ApplicationDbContext();
         }
         //api/Movies    return MovieDto list
-        public IEnumerable<MovieDto> GetMovies()
+        public IHttpActionResult GetMovies()
         {
-            return _context.Movies.ToList().Select(Mapper.Map<Movie, MovieDto>);
+            var moviesDto= _context.Movies
+                .Include(c => c.Genre)
+                .ToList()
+                .Select(Mapper.Map<Movie, MovieDto>);
+            return Ok(moviesDto);
         }
 
         // /api/Movies/1(id) returns single MovieDto
@@ -67,7 +72,7 @@ namespace MovieHut.Controllers.Api
         }
 
         //DELETE /api/Movies/1
-
+        [HttpDelete]
         public void DeleteMovie(int id)
         {
             if (!ModelState.IsValid)

@@ -77,7 +77,7 @@ namespace MovieHut.Controllers.Api
         }
 
         //DELETE /api/customers/1
-
+        [HttpDelete]
         public void DeleteCustomer(int id)
         {
             if (!ModelState.IsValid)
