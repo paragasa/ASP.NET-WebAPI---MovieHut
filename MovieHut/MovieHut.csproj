@@ -18,7 +18,7 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44363</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -254,6 +254,10 @@
     <Compile Include="Migrations\201906010135231_AddDrivingLicense.cs" />
     <Compile Include="Migrations\201906010135231_AddDrivingLicense.Designer.cs">
       <DependentUpon>201906010135231_AddDrivingLicense.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906012036539_AddCustomerManagerRole.cs" />
+    <Compile Include="Migrations\201906012036539_AddCustomerManagerRole.Designer.cs">
+      <DependentUpon>201906012036539_AddCustomerManagerRole.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -575,6 +579,7 @@
     <Content Include="Views\Customers\CustomerForm.cshtml" />
     <Content Include="Views\Movies\MovieForm.cshtml" />
     <Content Include="Views\Movies\ReadOnlyList.cshtml" />
+    <Content Include="Views\Customers\ReadOnlyList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -638,6 +643,9 @@
     <EmbeddedResource Include="Migrations\201906010135231_AddDrivingLicense.resx">
       <DependentUpon>201906010135231_AddDrivingLicense.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906012036539_AddCustomerManagerRole.resx">
+      <DependentUpon>201906012036539_AddCustomerManagerRole.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -657,7 +665,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59510</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:59510/</IISUrl>
+          <IISUrl>https://localhost:44363/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -23,12 +23,24 @@ namespace MovieHut.Controllers
         {
             _context.Dispose();
         }
-        public ActionResult Index()
+
+        //[Authorize(Roles= RoleName.CanManageCustomers)]
+        public ViewResult Index()
         {
-            
             return View();
         }
 
+        //[Authorize(Roles = RoleName.CanManageCustomers)]
+        public ViewResult New()
+        {
+            var membershipTypes = _context.MembershipTypes.ToList();
+            var viewModel = new CustomerFormViewModel
+            {
+                Customer = new Customer(),
+                MembershipTypes = membershipTypes
+            };
+            return View("CustomerForm", viewModel);
+        }
         public ActionResult Details(int id)
         {
             var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
@@ -41,19 +53,9 @@ namespace MovieHut.Controllers
         }
 
         
-        public ActionResult New()
-        {
-            var membershipTypes = _context.MembershipTypes.ToList();
-            var viewModel = new CustomerFormViewModel
-            {
-                Customer = new Customer(),
-                MembershipTypes = membershipTypes
-            };
-            return View("CustomerForm",viewModel);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //[Authorize(Roles = RoleName.CanManageCustomers)]
         public ActionResult Save(Customer customer)
         {
             if (!ModelState.IsValid)
@@ -83,6 +85,7 @@ namespace MovieHut.Controllers
             return RedirectToAction("Index", "Customers");
         }
 
+        //[Authorize(Roles = RoleName.CanManageCustomers)]
         public ActionResult Edit(int id)
         {
             var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
