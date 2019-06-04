@@ -11,13 +11,13 @@
     <div class="form-group">
         <label>Customer</label>
         <div class="tt-container">
-            <input id="customer" name="customer" type="text" value="" class="form-control" />
+            <input id="customer" data-rule-validCustomer="true" name="customer" required type="text" value="" class="form-control" />
         </div>
     </div>
     <div class="form-group">
         <label>Movie</label>
         <div class="tt-container">
-            <input id="movie" name="movie" type="text" value="" class="form-control" />
+            <input id="movie" data-rule-singleSelectedMovie="true" name="movie" required type="text" value="" class="form-control" />
         </div>
     </div>
 
@@ -29,7 +29,7 @@
     <button class="btn btn-primary">Submit</button>
 
 </form>
-
+@Scripts.Render("~/bundles/jqueryval");
 @section scripts{
     <script>
         $(document).ready(function() {
@@ -83,20 +83,37 @@
                     vm.movieIds.push(movie.id);
                 });
 
-            $('#newRental').submit(function(e) {
-                e.preventDefault();
-
-                $.ajax({
-                    url: "/Api/newRentals",
-                    method: "post",
-                    data:vm
-                })
-                .done(function () {
-                    toastr.success("Rental successfully recorded.")
-                })
-                .fail(function () {
-                    toastr.error("Something unexpected happened.")
+            $.validator.addMethod("validCustomer",
+                function() {
+                    return vm.customerId && vm.customerId !== 0;
                 });
+            $.validator.addMethod("singleSelectedMovie", function () {
+                return vm.movieIds.length > 0;
+            }, "Choose at least one movie.");
+
+            $('#newRental')
+            .validate({
+                submitHandler: function() {
+                    $.ajax({
+                            url: "/Api/newRentals",
+                            method: "post",
+                            data:vm
+                        })
+                        .done(function () {
+
+                            //clear form data
+                            toastr.success("Rental successfully recorded.")
+                            $('#customer').typeahead("val", "");
+                            $('#movie').typeahead("val", "");
+                            $('#movies').empty();
+
+                            vm = { movieIds: [] };//empty vm
+                            validator.resetForm();
+                        })
+                        .fail(function () {
+                            toastr.error("Something unexpected happened.")
+                        });
+                }
             });
 
         });

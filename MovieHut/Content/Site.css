@@ -24,13 +24,12 @@ textarea {
 }
 
 /*CSS FOR VALIDATION of ENtry Fields*/
-.field-validation-error {
+.field-validation-error,label.error
+{
     color: red;
 }
 
-.input-validation-error {
+.input-validation-error,label.error
+{
     border: 2px solid red;
-}
-.input-validation-error {
-    border: 2px solid red
 }
