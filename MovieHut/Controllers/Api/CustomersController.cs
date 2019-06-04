@@ -22,11 +22,15 @@ namespace MovieHut.Controllers.Api
         }
         //api/customers    return customerDto list
 
-        public IHttpActionResult GetCustomers()
+        public IHttpActionResult GetCustomers(string query = null)
         {
+            var customerQuery = _context.Customers
+                .Include(c => c.MembershipType);
 
-            var customersDto = _context.Customers
-                .Include(c => c.MembershipType)
+            if (!String.IsNullOrEmpty(query))
+                customerQuery = customerQuery.Where(c => c.Name.Contains(query));
+
+            var customersDto = customerQuery
                 .ToList()
                 .Select(Mapper.Map<Customer, CustomerDto>);
             return Ok(customersDto);

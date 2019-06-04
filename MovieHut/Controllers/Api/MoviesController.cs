@@ -20,10 +20,16 @@ namespace MovieHut.Controllers.Api
             _context = new ApplicationDbContext();
         }
         //api/Movies    return MovieDto list
-        public IHttpActionResult GetMovies()
+        public IHttpActionResult GetMovies(string query= null)
         {
-            var moviesDto= _context.Movies
+            var moviesQuery = _context.Movies
                 .Include(c => c.Genre)
+                .Where(m=> m.NumberAvailable>0);
+
+            if (!String.IsNullOrEmpty(query))
+                moviesQuery= moviesQuery.Where(m => m.Name.Contains(query));
+
+            var moviesDto= moviesQuery
                 .ToList()
                 .Select(Mapper.Map<Movie, MovieDto>);
             return Ok(moviesDto);
